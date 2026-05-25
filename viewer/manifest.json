@@ -1,7 +1,7 @@
 {
   "trajectory": {
     "fps": 30,
-    "n_frames": 625,
+    "n_frames": 589,
     "t_end": 20.0
   },
   "cfd": {
@@ -165,7 +165,7 @@
     ]
   },
   "fem": {
-    "n_samples": 63
+    "n_samples": 59
   },
   "drone_glb": "../../../cad-power-animations/models/drone/.drone.step.glb"
 }

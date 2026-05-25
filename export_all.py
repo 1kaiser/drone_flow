@@ -157,7 +157,7 @@ print(f"  Saved {len(h5_files)} CFD frames to viewer/cfd_frames/")
 
 # ─── 4. MANIFEST ─────────────────────────────────────────────────────────────
 manifest = {
-    "trajectory": {"fps": FPS, "n_frames": len(frames), "t_end": T_END},
+    "trajectory": {"fps": traj_data["fps"], "n_frames": len(frames), "t_end": traj_data["t_end"]},
     "cfd": {"n_frames": len(h5_files), "frames": cfd_meta},
     "fem": {"n_samples": len(fem_samples)},
     "drone_glb": "../../../cad-power-animations/models/drone/.drone.step.glb",
