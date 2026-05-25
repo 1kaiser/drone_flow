@@ -23,80 +23,30 @@ OUT = REPO / "viewer"
 CFD = OUT / "cfd_frames"
 CFD.mkdir(parents=True, exist_ok=True)
 
-# ─── 1. TRAJECTORY (6-DOF dynamics at 500 Hz, downsample to 30 fps) ─────────
-print("=== 1. Running 6-DOF trajectory ===")
-from dynamics.dynamics   import MASS, G, rk4
-from dynamics.controller import control
-from dynamics.propeller  import omega_to_rpm, hover_omega
-
-rk4_jit  = jax.jit(rk4)
-ctrl_jit = jax.jit(control)
-
-DT_SIM  = 1/500.
-FPS     = 30
-DT_OUT  = 1/FPS
-RATIO   = int(DT_OUT / DT_SIM)   # 500/30 ≈ 16 steps per output frame
-T_END   = 20.0
-N_SIM   = int(T_END / DT_SIM)
-
-def ramp(t, t0, z0, z1, v=0.8):
-    dt = jnp.maximum(t - t0, 0.)
-    fr = jnp.clip(dt * v / jnp.maximum(jnp.abs(z1-z0), 1e-3), 0., 1.)
-    return z0 + fr*(z1 - z0)
-
-def setpoint(t):
-    z_d   = jnp.where(t < 1., 0.,
-              jnp.where(t < 10., ramp(t,1.,0.,2.),
-                                  ramp(t,10.,2.,3.)))
-    px_d  = jnp.where(t < 9., 0., ramp(t,9.,0.,4.,0.4))
-    py_d  = jnp.where(t < 13., 0., ramp(t,13.,0.,2.,0.3))
-    psi_d = jnp.where(t < 6., 0., ramp(t,6.,0.,jnp.radians(60.),0.25))
-    return jnp.array([px_d, py_d, z_d, psi_d])
-
-state = jnp.zeros(12)
-frames = []
-
-for i in range(N_SIM):
-    t  = i * DT_SIM
-    sp = setpoint(t)
-    mot = ctrl_jit(state, sp)
-    state = rk4_jit(state, mot, DT_SIM)
-
-    if i % RATIO == 0:
-        px,py,pz,phi,theta,psi,u,v,w,p,q,r = [float(x) for x in state]
-        sp_arr = [float(x) for x in sp]
-        frames.append({
-            "t": round(t, 4),
-            "pos":  [round(px,4), round(py,4), round(pz,4)],
-            "att":  [round(float(jnp.degrees(phi)),3),
-                     round(float(jnp.degrees(theta)),3),
-                     round(float(jnp.degrees(psi)),3)],
-            "vel":  [round(u,4), round(v,4), round(w,4)],
-            "rpm":  [round(float(omega_to_rpm(mot[i])),1) for i in range(4)],
-            "sp":   {"z": round(sp_arr[2],3), "psi_deg": round(float(jnp.degrees(sp_arr[3])),1)},
-        })
-
-traj = {
-    "fps": FPS,
-    "dt":  round(DT_OUT, 4),
-    "t_end": T_END,
-    "n_frames": len(frames),
-    "hover_rpm": round(float(omega_to_rpm(hover_omega(MASS))), 1),
-    "frames": frames,
-}
-with open(OUT / "trajectory.json", "w") as f:
-    json.dump(traj, f, separators=(",", ":"))
-print(f"  trajectory.json: {len(frames)} frames @ {FPS} fps")
+# ─── 1. TRAJECTORY (multicopter_jax: kT/kQ measurement fit, quaternion dynamics)
+print("=== 1. Running 6-DOF trajectory (multicopter_jax) ===")
+from dynamics.jax_copter import run as run_jax_copter
+_dyn = run_jax_copter(
+    T_end=20.0, dt=1.0 / 500.,
+    out_json=OUT / "trajectory.json",
+    verbose=True,
+)
+print(f"  hover_rpm={_dyn['hover_rpm']:.0f}  settle={_dyn['settle_time_s']:.2f}s")
 
 
 # ─── 2. FEM ARM STRESS along trajectory (sampled every 10 output frames) ─────
 print("=== 2. FEM arm stress ===")
-from dynamics.propeller import _kT, _kQ, D, CT, CQ, RHO as RHO_AIR
+
+# Load trajectory frames from JSON written by jax_copter
+with open(OUT / "trajectory.json") as f_traj:
+    traj_data = json.load(f_traj)
+frames = traj_data["frames"]
+
+# kT from measurement-fit motor model
+_kT = float(_dyn["params"]["kT"][0])
 
 # Physical scaling
-U_REF = 10.0            # m/s reference wind speed
 RHO_PHYS = 1.225        # kg/m³
-Q_PHYS = 0.5 * RHO_PHYS * U_REF**2   # 61.25 Pa
 
 with open(REPO / "data" / "drone_arm_loads.json") as f:
     cfd_loads = json.load(f)
