@@ -6,8 +6,8 @@ Inner loop: attitude            → moments (Mx, My, Mz)
 Mixer:      moments + T_total   → motor omega [FL, FR, RL, RR]
 """
 import jax.numpy as jnp
-from drone_dynamics.propeller import CT, CQ, RHO, D, G
-from drone_dynamics.dynamics  import MASS, L, R_body_to_world
+from dynamics.propeller import CT, CQ, RHO, D, G
+from dynamics.dynamics  import MASS, L, R_body_to_world
 
 # ── Gain tables ───────────────────────────────────────────────────────────────
 KP_Z,  KD_Z  = 2.5,  4.5     # altitude  (ωn≈1.6, ζ≈1.4 → overdamped)

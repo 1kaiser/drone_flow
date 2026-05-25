@@ -82,7 +82,7 @@ try:
         ax.set_xlabel("x", color="white"); ax.set_ylabel("y", color="white")
 
     plt.tight_layout()
-    out = "/home/kaiser/projects/gi/drone_flow/naca_result.png"
+    out = "/home/kaiser/projects/gi/drone_flow/assets/naca_result.png"
     plt.savefig(out, dpi=150, bbox_inches="tight", facecolor="#0a0a14")
     print(f"Saved: {out}")
 

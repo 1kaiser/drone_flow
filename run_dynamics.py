@@ -4,7 +4,9 @@ Runs 6-DOF dynamics at 500 Hz, plots 6-panel state response.
 """
 import os, sys
 os.environ["JAX_PLATFORMS"] = "cpu"
-sys.path.insert(0, "/home/kaiser/projects/gi/drone_flow")
+from pathlib import Path
+REPO = Path(__file__).resolve().parent
+sys.path.insert(0, str(REPO))
 
 import jax
 import jax.numpy as jnp
@@ -13,9 +15,9 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from drone_dynamics.propeller import hover_omega, D, CT, CQ, RHO, omega_to_rpm
-from drone_dynamics.dynamics   import MASS, G, rk4
-from drone_dynamics.controller import control
+from dynamics.propeller import hover_omega, D, CT, CQ, RHO, omega_to_rpm
+from dynamics.dynamics  import MASS, G, rk4
+from dynamics.controller import control
 
 # ── JIT compile ──────────────────────────────────────────────────────────────
 rk4_jit  = jax.jit(rk4)
@@ -116,7 +118,7 @@ for idx, (ai, t, y, ylabel, color, sp) in enumerate(panels):
     ax.grid(alpha=0.15, color="white")
 
 plt.tight_layout()
-out = "/home/kaiser/projects/gi/drone_flow/dynamics_result.png"
+out = str(REPO / "assets" / "dynamics_result.png")
 plt.savefig(out, dpi=150, bbox_inches="tight", facecolor="#0a0a14")
 print(f"Saved: {out}")
 

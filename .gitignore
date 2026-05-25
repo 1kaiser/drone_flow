@@ -11,7 +11,8 @@ __pycache__/
 *.pyd
 .Python
 
-# Jupyter
+# Jupyter / papermill outputs (keep source .py, ignore generated .ipynb)
+notebooks/*.ipynb
 *.ipynb_checkpoints/
 .ipynb_checkpoints/
 

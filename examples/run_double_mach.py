@@ -75,6 +75,6 @@ for ax, (field, cmap, title, _) in zip(axes.flat, panels):
     ax.set_ylabel("y", color="white")
 
 plt.tight_layout()
-out = "/home/kaiser/projects/gi/drone_flow/double_mach_result.png"
+out = "/home/kaiser/projects/gi/drone_flow/assets/double_mach_result.png"
 plt.savefig(out, dpi=150, bbox_inches="tight", facecolor="#0a0a14")
 print(f"Saved: {out}")

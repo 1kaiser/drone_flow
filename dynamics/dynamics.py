@@ -12,7 +12,7 @@ Motor layout (top view, X-config):
 Sign convention: CCW = positive yaw torque contribution.
 """
 import jax.numpy as jnp
-from drone_dynamics.propeller import thrust, torque, G
+from dynamics.propeller import thrust, torque, G
 
 # ── Physical parameters ───────────────────────────────────────────────────────
 MASS = 1.5      # kg

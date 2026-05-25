@@ -8,7 +8,9 @@ Outputs to drone_flow/viewer/:
 """
 import os, sys, json
 os.environ["JAX_PLATFORMS"] = "cpu"
-sys.path.insert(0, "/home/kaiser/projects/gi/drone_flow")
+from pathlib import Path
+REPO = Path(__file__).resolve().parent
+sys.path.insert(0, str(REPO))
 
 import jax, jax.numpy as jnp
 import numpy as np
@@ -17,15 +19,15 @@ import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-OUT = Path("/home/kaiser/projects/gi/drone_flow/viewer")
+OUT = REPO / "viewer"
 CFD = OUT / "cfd_frames"
 CFD.mkdir(parents=True, exist_ok=True)
 
 # ─── 1. TRAJECTORY (6-DOF dynamics at 500 Hz, downsample to 30 fps) ─────────
 print("=== 1. Running 6-DOF trajectory ===")
-from drone_dynamics.dynamics   import MASS, G, rk4
-from drone_dynamics.controller import control
-from drone_dynamics.propeller  import omega_to_rpm, hover_omega
+from dynamics.dynamics   import MASS, G, rk4
+from dynamics.controller import control
+from dynamics.propeller  import omega_to_rpm, hover_omega
 
 rk4_jit  = jax.jit(rk4)
 ctrl_jit = jax.jit(control)
@@ -89,14 +91,14 @@ print(f"  trajectory.json: {len(frames)} frames @ {FPS} fps")
 
 # ─── 2. FEM ARM STRESS along trajectory (sampled every 10 output frames) ─────
 print("=== 2. FEM arm stress ===")
-from drone_dynamics.propeller import _kT, _kQ, D, CT, CQ, RHO as RHO_AIR
+from dynamics.propeller import _kT, _kQ, D, CT, CQ, RHO as RHO_AIR
 
 # Physical scaling
 U_REF = 10.0            # m/s reference wind speed
 RHO_PHYS = 1.225        # kg/m³
 Q_PHYS = 0.5 * RHO_PHYS * U_REF**2   # 61.25 Pa
 
-with open("/home/kaiser/projects/gi/drone_flow/drone_arm_loads.json") as f:
+with open(REPO / "data" / "drone_arm_loads.json") as f:
     cfd_loads = json.load(f)
 
 Cp_FR = cfd_loads["arm_Cp"]["FR"]   # -0.175 at hover
@@ -151,7 +153,7 @@ print(f"  fem_data.json: {len(fem_samples)} samples")
 
 # ─── 3. CFD FRAMES from JAXFLUIDS h5 files ───────────────────────────────────
 print("=== 3. Exporting CFD frames ===")
-H5_DIR = Path("/home/kaiser/projects/gi/drone_flow/results/drone_fuselage_Re200/domain")
+H5_DIR = REPO / "results" / "drone_fuselage_Re200" / "domain"
 h5_files = sorted(H5_DIR.glob("*.h5"))
 print(f"  Found {len(h5_files)} h5 snapshots")
 

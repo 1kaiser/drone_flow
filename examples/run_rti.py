@@ -82,6 +82,6 @@ for col, snap in enumerate(snapshots):
         ax.set_aspect("equal")
 
 plt.tight_layout()
-out = "/home/kaiser/projects/gi/drone_flow/rti_result.png"
+out = "/home/kaiser/projects/gi/drone_flow/assets/rti_result.png"
 plt.savefig(out, dpi=150, bbox_inches="tight", facecolor="#0a0a14")
 print(f"Saved: {out}")
