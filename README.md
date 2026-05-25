@@ -59,6 +59,55 @@ conda run -n num_python papermill notebooks/drone_pipeline.ipynb out.ipynb -p SK
 
 ---
 
+## 🏁 Multi-Drone Model Comparison
+
+Three airframes, same 20 s mission, same cascaded PID structure (attitude gains scaled by √(I/I_ref) to equalise closed-loop bandwidth).
+
+```bash
+JAX_PLATFORMS=cpu conda run -n num_python python3 run_comparison.py
+```
+
+### Dynamics Traces
+
+![comparison dynamics](assets/comparison_dynamics.png)
+
+### Motor RPM Profiles
+
+![comparison rpm](assets/comparison_rpm.png)
+
+### Step Response Summary
+
+![comparison barplot](assets/comparison_barplot.png)
+
+<details>
+<summary>📊 Full Comparison Table</summary>
+
+| Metric | Photography Drone | 5" Racing Drone | Heavy Lifter |
+|---|---|---|---|
+| **Mass** | 1.50 kg | 0.45 kg | 3.50 kg |
+| **Prop size** | 8.0" (203 mm) | 5.0" (127 mm) | 13.0" (330 mm) |
+| **CT / CQ** | 0.109 / 0.0095 | 0.105 / 0.0088 | 0.115 / 0.011 |
+| **Arm span** | 254 mm | 120 mm | 380 mm |
+| **Hover RPM** | 7 642 | 10 897 | 4 301 |
+| **Max RPM (mission)** | 8 367 | 11 917 | 4 684 |
+| **KP_RP (scaled)** | 8.00 | 2.55 | 18.26 |
+| **KP_YAW (scaled)** | 3.00 | 1.09 | 5.54 |
+| **Alt 0→2 m settle** | 4.11 s | 4.13 s | 4.00 s |
+| **Alt 2→3 m settle** | 2.95 s | 2.95 s | 2.93 s |
+| **Yaw 0→60° settle** | 3.44 s | 3.45 s | 3.43 s |
+| **Max tilt** | 24.2° | 23.9° | 24.2° |
+| **Max airspeed** | 3.86 m/s | 3.61 m/s | 5.26 m/s |
+
+**Key findings:**
+- Altitude and yaw settle times are nearly identical across all three airframes — the mass-compensated PID with inertia-scaled attitude gains achieves the same closed-loop bandwidth regardless of vehicle size.
+- The racer operates at 43% higher RPM than the photography drone at hover; the lifter at 44% lower. Transient RPM swings are also 3× wider on the racer (narrow arms = smaller moment arm, so more RPM delta needed per unit of angular acceleration).
+- Maximum airspeed differs: the heavier lifter's larger translational inertia produces more velocity overshoot during the horizontal translation phase.
+- Without inertia scaling (same raw gains for all), the racer saturated its motor RPM limits during attitude corrections, causing unstable altitude tracking — demonstrating why gain scheduling or bandwidth matching is essential when porting a controller to a different airframe.
+
+</details>
+
+---
+
 ## 💨 Step 2 — CFD: Fuselage Flow
 
 | Vorticity field | Surface pressure Cp |

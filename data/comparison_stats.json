@@ -1,0 +1,53 @@
+[
+  {
+    "name": "Photography Drone",
+    "label": "photo",
+    "mass_kg": 1.5,
+    "prop_in": 8.0,
+    "hover_rpm": 7642.0,
+    "max_rpm": 8367.0,
+    "twr": 1.0,
+    "KP_RP": 8.0,
+    "KP_YAW": 3.0,
+    "settle_alt1_s": 4.11,
+    "settle_alt2_s": 2.95,
+    "settle_yaw_s": 3.44,
+    "max_tilt_deg": 24.2,
+    "max_speed_ms": 3.86,
+    "wall_time_s": 5.7
+  },
+  {
+    "name": "5\" Racing Drone",
+    "label": "racer",
+    "mass_kg": 0.45,
+    "prop_in": 5.0,
+    "hover_rpm": 10897.0,
+    "max_rpm": 11917.0,
+    "twr": 1.0,
+    "KP_RP": 2.56,
+    "KP_YAW": 1.09,
+    "settle_alt1_s": 4.13,
+    "settle_alt2_s": 2.95,
+    "settle_yaw_s": 3.45,
+    "max_tilt_deg": 23.95,
+    "max_speed_ms": 3.61,
+    "wall_time_s": 5.5
+  },
+  {
+    "name": "Heavy Lifter",
+    "label": "lifter",
+    "mass_kg": 3.5,
+    "prop_in": 13.0,
+    "hover_rpm": 4301.0,
+    "max_rpm": 4684.0,
+    "twr": 1.0,
+    "KP_RP": 14.57,
+    "KP_YAW": 5.54,
+    "settle_alt1_s": 4.0,
+    "settle_alt2_s": 2.93,
+    "settle_yaw_s": 3.43,
+    "max_tilt_deg": 24.2,
+    "max_speed_ms": 5.26,
+    "wall_time_s": 5.6
+  }
+]
