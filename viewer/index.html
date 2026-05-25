@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Drone Flight — CFD + FEM + 6-DOF</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0a14; color:#fff; font-family:monospace; overflow:hidden; }
+#canvas { display:block; width:100vw; height:100vh; }
+
+#ui {
+  position:fixed; bottom:0; left:0; right:0;
+  background:rgba(10,10,20,0.88); border-top:1px solid #333;
+  padding:10px 16px; display:flex; gap:20px; align-items:center;
+}
+#timeline { flex:1; height:6px; -webkit-appearance:none; appearance:none;
+  background:#333; border-radius:3px; cursor:pointer; }
+#timeline::-webkit-slider-thumb {
+  -webkit-appearance:none; width:14px; height:14px;
+  border-radius:50%; background:#00d4ff; cursor:pointer; }
+.btn { background:#1a1a2e; border:1px solid #444; color:#fff;
+  padding:5px 12px; cursor:pointer; border-radius:4px; font-size:12px; }
+.btn:hover { border-color:#00d4ff; }
+.hud { font-size:11px; line-height:1.7; min-width:130px; }
+.hud span { color:#00d4ff; }
+
+#cfd-overlay {
+  position:fixed; top:10px; right:10px;
+  width:300px; border:1px solid #333; border-radius:6px; overflow:hidden;
+  background:#0a0a14;
+}
+#cfd-overlay img { width:100%; display:block; }
+#cfd-label { font-size:10px; padding:3px 8px; color:#888; }
+
+#stress-bar {
+  position:fixed; top:10px; left:10px;
+  background:rgba(10,10,20,0.85); border:1px solid #333;
+  border-radius:6px; padding:8px 12px; font-size:11px; min-width:160px;
+}
+.sval { color:#7fff00; font-size:13px; font-weight:bold; }
+.warn { color:#ff6b35; }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<!-- CFD panel -->
+<div id="cfd-overlay">
+  <img id="cfd-img" src="" alt="CFD frame">
+  <div id="cfd-label">vorticity | pressure  t=—</div>
+</div>
+
+<!-- FEM stress panel -->
+<div id="stress-bar">
+  <div>Arm stress (FR)</div>
+  <div class="sval" id="vm-val">— MPa</div>
+  <div>Tip deflection</div>
+  <div class="sval" id="tip-val">— mm</div>
+  <div>Safety factor</div>
+  <div class="sval" id="sf-val">—×</div>
+</div>
+
+<!-- Timeline / HUD -->
+<div id="ui">
+  <button class="btn" id="play-btn">▶ Play</button>
+  <input type="range" id="timeline" min="0" max="1" step="0.001" value="0">
+  <div class="hud">
+    t = <span id="hud-t">0.00</span>s &nbsp;
+    z = <span id="hud-z">0.00</span>m &nbsp;
+    ψ = <span id="hud-psi">0</span>° &nbsp;
+    |V| = <span id="hud-v">0.0</span>m/s
+  </div>
+  <div class="hud">
+    FL <span id="rpm0">—</span> &nbsp;
+    FR <span id="rpm1">—</span><br>
+    RL <span id="rpm2">—</span> &nbsp;
+    RR <span id="rpm3">—</span> RPM
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader }       from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls }    from 'three/addons/controls/OrbitControls.js';
+
+// ── Scene setup ──────────────────────────────────────────────────────────────
+const canvas   = document.getElementById('canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(devicePixelRatio);
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+
+const scene  = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0a14);
+scene.fog        = new THREE.FogExp2(0x0a0a14, 0.04);
+
+const camera = new THREE.PerspectiveCamera(55, innerWidth/innerHeight, 0.01, 200);
+camera.position.set(8, 4, 8);
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.07;
+controls.target.set(0, 1.5, 0);
+
+// ── Lighting ─────────────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0x334466, 1.2));
+const sun = new THREE.DirectionalLight(0xffffff, 2.5);
+sun.position.set(5, 10, 5);
+sun.castShadow = true;
+scene.add(sun);
+scene.add(new THREE.HemisphereLight(0x0a0a30, 0x000000, 0.5));
+
+// ── Grid ground ──────────────────────────────────────────────────────────────
+const grid = new THREE.GridHelper(30, 30, 0x1a1a3e, 0x1a1a2a);
+grid.position.y = 0;
+scene.add(grid);
+
+// ── Data ─────────────────────────────────────────────────────────────────────
+let traj = null, femData = null, manifest = null;
+let droneGroup = null;
+let droneLoaded = false;
+let trajLen = 0;
+let femSamples = [];
+
+// Trajectory ribbon (path line)
+const ribbonGeo  = new THREE.BufferGeometry();
+const ribbonMat  = new THREE.LineBasicMaterial({ color: 0x00d4ff, opacity: 0.5, transparent: true });
+const ribbonLine = new THREE.Line(ribbonGeo, ribbonMat);
+scene.add(ribbonLine);
+
+// Arm stress indicators (4 cylinders)
+const armMats = Array.from({length:4}, () =>
+  new THREE.MeshStandardMaterial({ color: 0x00ff88, emissive: 0x002200, metalness:0.3 }));
+const armMeshes = [];
+
+// ── Load drone GLB ───────────────────────────────────────────────────────────
+const loader = new GLTFLoader();
+const GLB_PATH = '/cad-power-animations/models/drone/.drone.step.glb';
+
+loader.load(GLB_PATH, (gltf) => {
+  droneGroup = gltf.scene;
+  droneGroup.scale.setScalar(0.004);   // scale from mm to ~m
+  droneGroup.traverse(child => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+      if (child.material) {
+        child.material = new THREE.MeshStandardMaterial({
+          color: 0x334455, metalness: 0.6, roughness: 0.4
+        });
+      }
+    }
+  });
+  scene.add(droneGroup);
+  droneLoaded = true;
+  console.log('Drone GLB loaded');
+
+  // Arm indicator cylinders (rough positions at 45° around drone)
+  const armOffsets = [
+    [ 0.3,  0,  0.3],  // FL
+    [ 0.3,  0, -0.3],  // FR
+    [-0.3,  0,  0.3],  // RL
+    [-0.3,  0, -0.3],  // RR
+  ];
+  armOffsets.forEach((off, i) => {
+    const geo  = new THREE.CylinderGeometry(0.015, 0.015, 0.5, 8);
+    const mesh = new THREE.Mesh(geo, armMats[i]);
+    mesh.rotation.z = Math.PI/2;
+    mesh.position.set(...off);
+    droneGroup.add(mesh);
+    armMeshes.push(mesh);
+  });
+}, undefined, (e) => console.warn('GLB load failed:', e));
+
+// ── Load JSON data ────────────────────────────────────────────────────────────
+async function loadAll() {
+  [traj, femData, manifest] = await Promise.all([
+    fetch('trajectory.json').then(r => r.json()),
+    fetch('fem_data.json').then(r => r.json()),
+    fetch('manifest.json').then(r => r.json()),
+  ]);
+  trajLen    = traj.frames.length;
+  femSamples = femData.samples;
+
+  // Build ribbon from full trajectory
+  const pts = traj.frames.map(f => new THREE.Vector3(f.pos[0], f.pos[2], -f.pos[1]));
+  ribbonGeo.setFromPoints(pts);
+
+  document.getElementById('timeline').max = trajLen - 1;
+  console.log(`Loaded ${trajLen} trajectory frames, ${femSamples.length} FEM samples`);
+}
+loadAll();
+
+// ── Playback state ────────────────────────────────────────────────────────────
+let playing   = false;
+let frameIdx  = 0;
+let lastTime  = null;
+
+const playBtn  = document.getElementById('play-btn');
+const timeline = document.getElementById('timeline');
+
+playBtn.addEventListener('click', () => {
+  playing = !playing;
+  playBtn.textContent = playing ? '⏸ Pause' : '▶ Play';
+  if (playing && frameIdx >= trajLen - 1) frameIdx = 0;
+});
+timeline.addEventListener('input', () => {
+  frameIdx = parseInt(timeline.value);
+  applyFrame(frameIdx);
+});
+
+// ── CFD frame mapping ─────────────────────────────────────────────────────────
+// Map trajectory time → nearest CFD frame (CFD runs t=0..60, traj t=0..20)
+function cfdFrameFor(t_traj) {
+  if (!manifest) return 0;
+  const t_cfd = t_traj * 3;  // CFD sim is 3× longer
+  let best = 0, bestDiff = Infinity;
+  manifest.cfd.frames.forEach((f, i) => {
+    const d = Math.abs(f.t_cfd - t_cfd);
+    if (d < bestDiff) { bestDiff = d; best = i; }
+  });
+  return best;
+}
+
+// ── Stress color (green→yellow→red) ──────────────────────────────────────────
+function stressColor(sigma_mpa, yield_mpa = 276) {
+  const frac = Math.min(sigma_mpa / (yield_mpa * 0.3), 1.0);
+  const r = Math.min(1, frac * 2);
+  const g = Math.min(1, (1 - frac) * 2);
+  return new THREE.Color(r, g, 0.05);
+}
+
+// ── FEM lookup ────────────────────────────────────────────────────────────────
+function femFor(frameIdx) {
+  if (!femSamples.length) return null;
+  let best = femSamples[0];
+  femSamples.forEach(s => {
+    if (Math.abs(s.frame_idx - frameIdx) < Math.abs(best.frame_idx - frameIdx)) best = s;
+  });
+  return best;
+}
+
+// ── Apply frame ───────────────────────────────────────────────────────────────
+const DEG = Math.PI / 180;
+function applyFrame(idx) {
+  if (!traj || !droneLoaded) return;
+  const fr = traj.frames[idx];
+  const [phi, theta, psi] = fr.att.map(a => a * DEG);
+
+  // Drone position (swap Y↔Z for Three.js: JAX +z=up → Three.js +y=up)
+  droneGroup.position.set(fr.pos[0], fr.pos[2], -fr.pos[1]);
+
+  // ZYX Euler → Three.js rotation (order 'ZYX' in THREE = apply Z first)
+  droneGroup.rotation.order = 'ZYX';
+  droneGroup.rotation.z = psi;
+  droneGroup.rotation.y = theta;
+  droneGroup.rotation.x = phi;
+
+  // CFD frame
+  const cIdx = cfdFrameFor(fr.t);
+  document.getElementById('cfd-img').src = `cfd_frames/frame_${String(cIdx).padStart(3,'0')}.png`;
+  if (manifest) {
+    const cMeta = manifest.cfd.frames[cIdx];
+    document.getElementById('cfd-label').textContent =
+      `vorticity | pressure   CFD t=${cMeta ? cMeta.t_cfd.toFixed(1) : '—'}`;
+  }
+
+  // FEM stress
+  const fem = femFor(idx);
+  if (fem) {
+    document.getElementById('vm-val').textContent  = fem.vonMises_MPa.toFixed(3) + ' MPa';
+    document.getElementById('tip-val').textContent = fem.delta_tip_mm.toFixed(4) + ' mm';
+    document.getElementById('sf-val').textContent  = fem.safety_factor + '×';
+    const col = stressColor(fem.vonMises_MPa);
+    armMats.forEach(m => { m.color.copy(col); m.emissive.copy(col).multiplyScalar(0.2); });
+  }
+
+  // HUD
+  document.getElementById('hud-t').textContent   = fr.t.toFixed(2);
+  document.getElementById('hud-z').textContent   = fr.pos[2].toFixed(2);
+  document.getElementById('hud-psi').textContent = fr.att[2].toFixed(1);
+  const spd = Math.hypot(...fr.vel);
+  document.getElementById('hud-v').textContent   = spd.toFixed(2);
+  ['rpm0','rpm1','rpm2','rpm3'].forEach((id,i) =>
+    document.getElementById(id).textContent = Math.round(fr.rpm[i]));
+
+  timeline.value = idx;
+}
+
+// ── Render loop ───────────────────────────────────────────────────────────────
+const FPS = 30;
+const DT  = 1000 / FPS;
+
+function animate(now) {
+  requestAnimationFrame(animate);
+  controls.update();
+
+  if (playing && traj) {
+    if (lastTime === null) lastTime = now;
+    const elapsed = now - lastTime;
+    if (elapsed >= DT) {
+      lastTime = now;
+      frameIdx = (frameIdx + 1) % trajLen;
+      applyFrame(frameIdx);
+    }
+  }
+  renderer.render(scene, camera);
+}
+requestAnimationFrame(animate);
+
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>

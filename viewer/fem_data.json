@@ -1,0 +1,574 @@
+{
+  "arm_length_m": 0.262,
+  "material": "Al6061",
+  "yield_MPa": 276,
+  "samples": [
+    {
+      "frame_idx": 0,
+      "t": 0.0,
+      "T_motor_N": 3.679,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 10,
+      "t": 0.32,
+      "T_motor_N": 3.679,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 20,
+      "t": 0.64,
+      "T_motor_N": 3.679,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 30,
+      "t": 0.96,
+      "T_motor_N": 3.679,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 40,
+      "t": 1.28,
+      "T_motor_N": 3.796,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 50,
+      "t": 1.6,
+      "T_motor_N": 3.821,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.0
+    },
+    {
+      "frame_idx": 60,
+      "t": 1.92,
+      "T_motor_N": 3.814,
+      "F_aero_N": 0.0001,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.8
+    },
+    {
+      "frame_idx": 70,
+      "t": 2.24,
+      "T_motor_N": 3.802,
+      "F_aero_N": 0.0001,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.5
+    },
+    {
+      "frame_idx": 80,
+      "t": 2.56,
+      "T_motor_N": 3.789,
+      "F_aero_N": 0.0002,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.2
+    },
+    {
+      "frame_idx": 90,
+      "t": 2.88,
+      "T_motor_N": 3.766,
+      "F_aero_N": 0.0002,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4316.9
+    },
+    {
+      "frame_idx": 100,
+      "t": 3.2,
+      "T_motor_N": 3.724,
+      "F_aero_N": 0.0003,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4316.8
+    },
+    {
+      "frame_idx": 110,
+      "t": 3.52,
+      "T_motor_N": 3.715,
+      "F_aero_N": 0.0003,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4316.7
+    },
+    {
+      "frame_idx": 120,
+      "t": 3.84,
+      "T_motor_N": 3.713,
+      "F_aero_N": 0.0003,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4316.7
+    },
+    {
+      "frame_idx": 130,
+      "t": 4.16,
+      "T_motor_N": 3.63,
+      "F_aero_N": 0.0002,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.0
+    },
+    {
+      "frame_idx": 140,
+      "t": 4.48,
+      "T_motor_N": 3.617,
+      "F_aero_N": 0.0002,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.3
+    },
+    {
+      "frame_idx": 150,
+      "t": 4.8,
+      "T_motor_N": 3.622,
+      "F_aero_N": 0.0001,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.6
+    },
+    {
+      "frame_idx": 160,
+      "t": 5.12,
+      "T_motor_N": 3.631,
+      "F_aero_N": 0.0001,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.7
+    },
+    {
+      "frame_idx": 170,
+      "t": 5.44,
+      "T_motor_N": 3.639,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.9
+    },
+    {
+      "frame_idx": 180,
+      "t": 5.76,
+      "T_motor_N": 3.646,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.0
+    },
+    {
+      "frame_idx": 190,
+      "t": 6.08,
+      "T_motor_N": 3.651,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.0
+    },
+    {
+      "frame_idx": 200,
+      "t": 6.4,
+      "T_motor_N": 3.656,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 210,
+      "t": 6.72,
+      "T_motor_N": 3.66,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 220,
+      "t": 7.04,
+      "T_motor_N": 3.664,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 230,
+      "t": 7.36,
+      "T_motor_N": 3.667,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 240,
+      "t": 7.68,
+      "T_motor_N": 3.669,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 250,
+      "t": 8.0,
+      "T_motor_N": 3.67,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 260,
+      "t": 8.32,
+      "T_motor_N": 3.672,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 270,
+      "t": 8.64,
+      "T_motor_N": 3.673,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 280,
+      "t": 8.96,
+      "T_motor_N": 3.674,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 290,
+      "t": 9.28,
+      "T_motor_N": 3.675,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 300,
+      "t": 9.6,
+      "T_motor_N": 3.676,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.1
+    },
+    {
+      "frame_idx": 310,
+      "t": 9.92,
+      "T_motor_N": 3.679,
+      "F_aero_N": 0.0,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4318.0
+    },
+    {
+      "frame_idx": 320,
+      "t": 10.24,
+      "T_motor_N": 3.791,
+      "F_aero_N": 0.0001,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.5
+    },
+    {
+      "frame_idx": 330,
+      "t": 10.56,
+      "T_motor_N": 3.829,
+      "F_aero_N": 0.0003,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4316.4
+    },
+    {
+      "frame_idx": 340,
+      "t": 10.88,
+      "T_motor_N": 3.827,
+      "F_aero_N": 0.0006,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4314.6
+    },
+    {
+      "frame_idx": 350,
+      "t": 11.2,
+      "T_motor_N": 3.812,
+      "F_aero_N": 0.001,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4312.7
+    },
+    {
+      "frame_idx": 360,
+      "t": 11.52,
+      "T_motor_N": 3.68,
+      "F_aero_N": 0.0012,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4311.7
+    },
+    {
+      "frame_idx": 370,
+      "t": 11.84,
+      "T_motor_N": 3.639,
+      "F_aero_N": 0.0011,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4312.2
+    },
+    {
+      "frame_idx": 380,
+      "t": 12.16,
+      "T_motor_N": 3.638,
+      "F_aero_N": 0.0007,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4314.1
+    },
+    {
+      "frame_idx": 390,
+      "t": 12.48,
+      "T_motor_N": 3.652,
+      "F_aero_N": 0.0003,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4316.3
+    },
+    {
+      "frame_idx": 400,
+      "t": 12.8,
+      "T_motor_N": 3.67,
+      "F_aero_N": 0.0001,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.8
+    },
+    {
+      "frame_idx": 410,
+      "t": 13.12,
+      "T_motor_N": 3.683,
+      "F_aero_N": 0.0001,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.8
+    },
+    {
+      "frame_idx": 420,
+      "t": 13.44,
+      "T_motor_N": 3.685,
+      "F_aero_N": 0.0003,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4316.3
+    },
+    {
+      "frame_idx": 430,
+      "t": 13.76,
+      "T_motor_N": 3.676,
+      "F_aero_N": 0.0006,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4314.8
+    },
+    {
+      "frame_idx": 440,
+      "t": 14.08,
+      "T_motor_N": 3.67,
+      "F_aero_N": 0.0006,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4314.7
+    },
+    {
+      "frame_idx": 450,
+      "t": 14.4,
+      "T_motor_N": 3.681,
+      "F_aero_N": 0.0004,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4316.0
+    },
+    {
+      "frame_idx": 460,
+      "t": 14.72,
+      "T_motor_N": 3.716,
+      "F_aero_N": 0.0002,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4316.9
+    },
+    {
+      "frame_idx": 470,
+      "t": 15.04,
+      "T_motor_N": 3.763,
+      "F_aero_N": 0.0007,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4314.1
+    },
+    {
+      "frame_idx": 480,
+      "t": 15.36,
+      "T_motor_N": 3.798,
+      "F_aero_N": 0.0023,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0641,
+      "safety_factor": 4305.7
+    },
+    {
+      "frame_idx": 490,
+      "t": 15.68,
+      "T_motor_N": 3.794,
+      "F_aero_N": 0.0045,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0643,
+      "safety_factor": 4293.6
+    },
+    {
+      "frame_idx": 500,
+      "t": 16.0,
+      "T_motor_N": 3.75,
+      "F_aero_N": 0.0064,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0644,
+      "safety_factor": 4283.5
+    },
+    {
+      "frame_idx": 510,
+      "t": 16.32,
+      "T_motor_N": 3.702,
+      "F_aero_N": 0.0066,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0645,
+      "safety_factor": 4282.1
+    },
+    {
+      "frame_idx": 520,
+      "t": 16.64,
+      "T_motor_N": 3.701,
+      "F_aero_N": 0.0048,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0643,
+      "safety_factor": 4291.8
+    },
+    {
+      "frame_idx": 530,
+      "t": 16.96,
+      "T_motor_N": 3.781,
+      "F_aero_N": 0.002,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0641,
+      "safety_factor": 4307.4
+    },
+    {
+      "frame_idx": 540,
+      "t": 17.28,
+      "T_motor_N": 3.926,
+      "F_aero_N": 0.0001,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0639,
+      "safety_factor": 4317.4
+    },
+    {
+      "frame_idx": 550,
+      "t": 17.6,
+      "T_motor_N": 4.059,
+      "F_aero_N": 0.0014,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4310.3
+    },
+    {
+      "frame_idx": 560,
+      "t": 17.92,
+      "T_motor_N": 4.077,
+      "F_aero_N": 0.0061,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0644,
+      "safety_factor": 4284.7
+    },
+    {
+      "frame_idx": 570,
+      "t": 18.24,
+      "T_motor_N": 3.948,
+      "F_aero_N": 0.0115,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0649,
+      "safety_factor": 4255.9
+    },
+    {
+      "frame_idx": 580,
+      "t": 18.56,
+      "T_motor_N": 3.778,
+      "F_aero_N": 0.0133,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.065,
+      "safety_factor": 4245.9
+    },
+    {
+      "frame_idx": 590,
+      "t": 18.88,
+      "T_motor_N": 3.752,
+      "F_aero_N": 0.0099,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0647,
+      "safety_factor": 4264.6
+    },
+    {
+      "frame_idx": 600,
+      "t": 19.2,
+      "T_motor_N": 3.928,
+      "F_aero_N": 0.004,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0642,
+      "safety_factor": 4296.0
+    },
+    {
+      "frame_idx": 610,
+      "t": 19.52,
+      "T_motor_N": 4.144,
+      "F_aero_N": 0.0011,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.064,
+      "safety_factor": 4312.2
+    },
+    {
+      "frame_idx": 620,
+      "t": 19.84,
+      "T_motor_N": 4.309,
+      "F_aero_N": 0.0038,
+      "delta_tip_mm": 0.0013,
+      "vonMises_MPa": 0.0642,
+      "safety_factor": 4297.5
+    }
+  ]
+}

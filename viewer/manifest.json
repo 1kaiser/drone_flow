@@ -1,0 +1,171 @@
+{
+  "trajectory": {
+    "fps": 30,
+    "n_frames": 625,
+    "t_end": 20.0
+  },
+  "cfd": {
+    "n_frames": 31,
+    "frames": [
+      {
+        "idx": 0,
+        "t_cfd": 0.0,
+        "file": "frame_000.png"
+      },
+      {
+        "idx": 1,
+        "t_cfd": 10.002,
+        "file": "frame_001.png"
+      },
+      {
+        "idx": 2,
+        "t_cfd": 12.002,
+        "file": "frame_002.png"
+      },
+      {
+        "idx": 3,
+        "t_cfd": 14.0,
+        "file": "frame_003.png"
+      },
+      {
+        "idx": 4,
+        "t_cfd": 16.002,
+        "file": "frame_004.png"
+      },
+      {
+        "idx": 5,
+        "t_cfd": 18.005,
+        "file": "frame_005.png"
+      },
+      {
+        "idx": 6,
+        "t_cfd": 2.002,
+        "file": "frame_006.png"
+      },
+      {
+        "idx": 7,
+        "t_cfd": 20.002,
+        "file": "frame_007.png"
+      },
+      {
+        "idx": 8,
+        "t_cfd": 22.002,
+        "file": "frame_008.png"
+      },
+      {
+        "idx": 9,
+        "t_cfd": 24.006,
+        "file": "frame_009.png"
+      },
+      {
+        "idx": 10,
+        "t_cfd": 26.003,
+        "file": "frame_010.png"
+      },
+      {
+        "idx": 11,
+        "t_cfd": 28.002,
+        "file": "frame_011.png"
+      },
+      {
+        "idx": 12,
+        "t_cfd": 30.003,
+        "file": "frame_012.png"
+      },
+      {
+        "idx": 13,
+        "t_cfd": 32.006,
+        "file": "frame_013.png"
+      },
+      {
+        "idx": 14,
+        "t_cfd": 34.003,
+        "file": "frame_014.png"
+      },
+      {
+        "idx": 15,
+        "t_cfd": 36.002,
+        "file": "frame_015.png"
+      },
+      {
+        "idx": 16,
+        "t_cfd": 38.002,
+        "file": "frame_016.png"
+      },
+      {
+        "idx": 17,
+        "t_cfd": 4.003,
+        "file": "frame_017.png"
+      },
+      {
+        "idx": 18,
+        "t_cfd": 40.004,
+        "file": "frame_018.png"
+      },
+      {
+        "idx": 19,
+        "t_cfd": 42.001,
+        "file": "frame_019.png"
+      },
+      {
+        "idx": 20,
+        "t_cfd": 44.007,
+        "file": "frame_020.png"
+      },
+      {
+        "idx": 21,
+        "t_cfd": 46.0,
+        "file": "frame_021.png"
+      },
+      {
+        "idx": 22,
+        "t_cfd": 48.002,
+        "file": "frame_022.png"
+      },
+      {
+        "idx": 23,
+        "t_cfd": 50.006,
+        "file": "frame_023.png"
+      },
+      {
+        "idx": 24,
+        "t_cfd": 52.004,
+        "file": "frame_024.png"
+      },
+      {
+        "idx": 25,
+        "t_cfd": 54.004,
+        "file": "frame_025.png"
+      },
+      {
+        "idx": 26,
+        "t_cfd": 56.005,
+        "file": "frame_026.png"
+      },
+      {
+        "idx": 27,
+        "t_cfd": 58.001,
+        "file": "frame_027.png"
+      },
+      {
+        "idx": 28,
+        "t_cfd": 6.001,
+        "file": "frame_028.png"
+      },
+      {
+        "idx": 29,
+        "t_cfd": 60.005,
+        "file": "frame_029.png"
+      },
+      {
+        "idx": 30,
+        "t_cfd": 8.002,
+        "file": "frame_030.png"
+      }
+    ]
+  },
+  "fem": {
+    "n_samples": 63
+  },
+  "drone_glb": "../../../cad-power-animations/models/drone/.drone.step.glb"
+}
